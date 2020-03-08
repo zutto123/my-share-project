@@ -7,7 +7,9 @@
           size="large"
           type="text"
           placeholder="账号名"
-          v-decorator="['email', {rules: [{ required: true, type: 'email', message: '请输入账号名' }], validateTrigger: 'blur'}]"
+          v-decorator="['email',
+          {rules: [{ required: true, message: '请输入账号名' }], validateTrigger: 'blur'}
+          ]"
         ></a-input>
       </a-form-item>
       <a-form-item>
@@ -16,7 +18,10 @@
           type="password"
           placeholder="密码"
           autocomplete="false"
-          v-decorator="['password', {rules: [{ required: true, message: '请输入密码' }], validateTrigger: ['change', 'blur']}]"
+          v-decorator="[
+          'password',
+          {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
+          ]"
         ></a-input>
       </a-form-item>
       <a-form-item>
@@ -47,25 +52,6 @@
 
 <script>
 import { mixinDevice } from '@/utils/mixin.js'
-
-const levelNames = {
-  0: '低',
-  1: '低',
-  2: '中',
-  3: '强'
-}
-const levelClass = {
-  0: 'error',
-  1: 'error',
-  2: 'warning',
-  3: 'success'
-}
-const levelColor = {
-  0: '#ff0000',
-  1: '#ff0000',
-  2: '#ff7e05',
-  3: '#52c41a'
-}
 export default {
   name: 'Register',
   components: {
@@ -74,7 +60,6 @@ export default {
   data () {
     return {
       form: this.$form.createForm(this),
-
       state: {
         time: 60,
         smsSendBtn: false,
@@ -84,17 +69,6 @@ export default {
         progressColor: '#FF0000'
       },
       registerBtn: false
-    }
-  },
-  computed: {
-    passwordLevelClass () {
-      return levelClass[this.state.passwordLevel]
-    },
-    passwordLevelName () {
-      return levelNames[this.state.passwordLevel]
-    },
-    passwordLevelColor () {
-      return levelColor[this.state.passwordLevel]
     }
   },
   methods: {
@@ -107,14 +81,6 @@ export default {
       if (value && password && value.trim() !== password.trim()) {
         callback(new Error('两次密码不一致'))
       }
-      callback()
-    },
-
-    handlePhoneCheck (rule, value, callback) {
-      console.log('handlePhoneCheck, rule:', rule)
-      console.log('handlePhoneCheck, value', value)
-      console.log('handlePhoneCheck, callback', callback)
-
       callback()
     },
     handleSubmit () {

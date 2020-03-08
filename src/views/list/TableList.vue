@@ -8,33 +8,10 @@
               <a-input v-model="queryParam.id" placeholder=""/>
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="使用状态">
-              <a-select v-model="queryParam.status" placeholder="请选择" default-value="0">
-                <a-select-option value="0">全部</a-select-option>
-                <a-select-option value="1">关闭</a-select-option>
-                <a-select-option value="2">运行中</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
           <template v-if="advanced">
             <a-col :md="8" :sm="24">
               <a-form-item label="调用次数">
                 <a-input-number v-model="queryParam.callNo" style="width: 100%"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="8" :sm="24">
-              <a-form-item label="更新日期">
-                <a-date-picker v-model="queryParam.date" style="width: 100%" placeholder="请输入更新日期"/>
-              </a-form-item>
-            </a-col>
-            <a-col :md="8" :sm="24">
-              <a-form-item label="使用状态">
-                <a-select v-model="queryParam.useStatus" placeholder="请选择" default-value="0">
-                  <a-select-option value="0">全部</a-select-option>
-                  <a-select-option value="1">关闭</a-select-option>
-                  <a-select-option value="2">运行中</a-select-option>
-                </a-select>
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
@@ -51,10 +28,6 @@
             <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
               <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
               <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
-              <a @click="toggleAdvanced" style="margin-left: 8px">
-                {{ advanced ? '收起' : '展开' }}
-                <a-icon :type="advanced ? 'up' : 'down'"/>
-              </a>
             </span>
           </a-col>
         </a-row>
@@ -62,8 +35,6 @@
     </div>
 
     <div class="table-operator">
-      <a-button type="primary" icon="plus" @click="$refs.createModal.add()">新建</a-button>
-      <a-button type="dashed" @click="tableOption">{{ optionAlertShow && '关闭' || '开启' }} alert</a-button>
       <a-dropdown v-action:edit v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
           <a-menu-item key="1"><a-icon type="delete" />删除</a-menu-item>
@@ -76,6 +47,7 @@
       </a-dropdown>
     </div>
 
+    <operate-modal ref="operate" @isok="okOperate"/>
     <s-table
       ref="table"
       size="default"
@@ -98,23 +70,22 @@
 
       <span slot="action" slot-scope="text, record">
         <template>
-          <a @click="handleEdit(record)">配置</a>
+          <a @click="handleEdit(record)">禁言</a>
           <a-divider type="vertical" />
           <a @click="handleSub(record)">订阅报警</a>
         </template>
       </span>
     </s-table>
     <create-form ref="createModal" @ok="handleOk" />
-    <step-by-step-modal ref="modal" @ok="handleOk"/>
   </a-card>
 </template>
 
 <script>
 import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
-import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
 import { getRoleList, getServiceList } from '@/api/manage'
+import OperateModal from '../users/OperateModal'
 
 const statusMap = {
   0: {
@@ -141,7 +112,7 @@ export default {
     STable,
     Ellipsis,
     CreateForm,
-    StepByStepModal
+    OperateModal
   },
   data () {
     return {
@@ -161,21 +132,11 @@ export default {
           dataIndex: 'no'
         },
         {
-          title: '描述',
-          dataIndex: 'description',
-          scopedSlots: { customRender: 'description' }
-        },
-        {
           title: '服务调用次数',
           dataIndex: 'callNo',
           sorter: true,
           needTotal: true,
           customRender: (text) => text + ' 次'
-        },
-        {
-          title: '状态',
-          dataIndex: 'status',
-          scopedSlots: { customRender: 'status' }
         },
         {
           title: '更新时间',
@@ -248,10 +209,13 @@ export default {
         this.optionAlertShow = false
       }
     },
-
     handleEdit (record) {
-      console.log(record)
-      this.$refs.modal.edit(record)
+      this.$refs.operate.open('是否要禁言该用户？', '正在处理...');
+    },
+    okOperate: function(){
+      setTimeout(() => {
+        this.$refs.operate.close();
+      }, 2000);
     },
     handleSub (record) {
       if (record.status !== 0) {

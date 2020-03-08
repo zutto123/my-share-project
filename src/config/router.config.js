@@ -11,6 +11,22 @@ export const asyncRouterMap = [
     meta: { title: '首页' },
     redirect: '/dashboard/workplace',
     children: [
+      // 用户管理
+      // // forms
+      {
+        path: '/users',
+        redirect: '/users/usersManagement',
+        component: PageView,
+        meta: { title: '用户管理', icon: 'form'},
+        children: [
+          {
+            path: '/users/usersManagement',
+            name: 'mute',
+            component: () => import('@/views/users/UserMute'),
+            meta: { title: '禁言功能', keepAlive: true}
+          }
+        ]
+      },
       // dashboard
       {
         path: '/dashboard',
@@ -51,7 +67,7 @@ export const asyncRouterMap = [
         path: '/form',
         redirect: '/form/base-form',
         component: PageView,
-        meta: { title: '表单页', icon: 'form', permission: [ 'form' ] },
+        meta: { title: '表单页', permission: [ 'form' ] },
         children: [
           {
             path: '/form/base-form',

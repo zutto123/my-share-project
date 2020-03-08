@@ -4,11 +4,11 @@
       <div class="top">
         <div class="header">
           <a href="/">
-            <span class="title">管理平台系统</span>
+            <span class="title">管理系统平台</span>
           </a>
         </div>
         <div class="desc">
-         欢迎你来到管理平台
+         欢迎你来到管理系统平台
         </div>
       </div>
 

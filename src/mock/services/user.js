@@ -372,6 +372,17 @@ const info = (options) => {
 
 const userNav = (options) => {
   const nav = [
+    {
+      'name': 'users',
+      'parentId': 0,
+      'id': 10,
+      'meta': {
+        'icon': 'form',
+        'title': '用户管理'
+      },
+      'redirect': '/users/usersManagement',
+      'component': 'PageView'
+    },
     // dashboard
     {
       'name': 'dashboard',
