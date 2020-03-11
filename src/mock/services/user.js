@@ -383,6 +383,17 @@ const userNav = (options) => {
       'redirect': '/users/usersManagement',
       'component': 'PageView'
     },
+    {
+      'name': 'social',
+      'parentId': 0,
+      'id': 10,
+      'meta': {
+        'icon': 'dashboard',
+        'title': '社交管理'
+      },
+      'redirect': '/social/socialManagement',
+      'component': 'PageView'
+    },
     // dashboard
     {
       'name': 'dashboard',

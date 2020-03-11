@@ -20,10 +20,31 @@ export const asyncRouterMap = [
         meta: { title: '用户管理', icon: 'form'},
         children: [
           {
-            path: '/users/usersManagement',
+            path: '/users/usersMute',
             name: 'mute',
             component: () => import('@/views/users/UserMute'),
             meta: { title: '禁言功能', keepAlive: true}
+          },
+          {
+            path: '/users/usersFreeze',
+            name: 'freeze',
+            component: () => import('@/views/users/UserFreeze'),
+            meta: { title: '冻结功能', keepAlive: true}
+          }
+        ]
+      },
+      // 社交管理
+      {
+        path: '/social',
+        redirect: '/social/socialManagement',
+        component: PageView,
+        meta: { title: '社交管理', icon: bxAnaalyse},
+        children: [
+          {
+            path: '/social/imgCheck',
+            name: 'imgCheck',
+            component: () => import('@/views/social/ImgCheck'),
+            meta: { title: '图片审核', keepAlive: true}
           }
         ]
       },
